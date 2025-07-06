@@ -48,6 +48,11 @@ public class MandelbrotArgs {
     int xResolution = 1024;
     int yResolution = 768;
 
+    //
+    // Anti-Aliasing
+    //
+    int aaCycles = 1;
+
     private MandelbrotArgs() {
     }
 
@@ -62,7 +67,8 @@ public class MandelbrotArgs {
             + "-vp <ulx> <uly> <lrx> <lry>\tViewport coordinates, i.e. the X and Y locations of the Upper Left and\n"
             + "\t\t\t\t\tLower Right corners of the image in the Mandelbrot plane. Accepts decimal values\n"
             + "\t\t\t\t\tDefault values show the whole set (-2.0 1.125 1.0 - 1.125)\n"
-            + "-r <x> <y>\t\t\tResolution of the output image as integer values X and Y. Defaults to 1024 x 768.";
+            + "-r <x> <y>\t\t\tResolution of the output image as integer values X and Y. Defaults to 1024 x 768.\n"
+            + "-aa <x>\t\t\tAnti-aliasing cycles. Positive Integer 1 (default) to as many as you like";
     }
 
     static public MandelbrotArgs parseArgs( String args[]) {
@@ -181,6 +187,21 @@ public class MandelbrotArgs {
                     } catch (NumberFormatException x) {
                         result.parseErrors = true;
                         result.errorMsg = "Y resolution for output image is not a valid integer number.";
+                    }
+                }
+            } else if( switchName.compareToIgnoreCase( "-aa") == 0 ) {
+                String aaStr = safeGetArg(args, ++i);
+
+                if (aaStr == null) {
+                    result.parseErrors = true;
+                    result.errorMsg = "Missing Anti-Alias value.";
+                } else {
+                    try {
+                        result.aaCycles = Integer.parseInt(aaStr);
+                        // TODO: Check for positive integers
+                    } catch (NumberFormatException x) {
+                        result.parseErrors = true;
+                        result.errorMsg = "Anti-alias is not a valid integer number.";
                     }
                 }
             } else {

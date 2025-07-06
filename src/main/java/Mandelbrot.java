@@ -68,7 +68,7 @@ public class Mandelbrot {
                 double X = mArgs.minViewportX + ((double) x * xIncrement);
                 double Y = mArgs.maxViewportY - ((double) y * yIncrement);      // Invert Y from world to camera co-ords
 
-                MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y);
+                MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, mArgs.aaCycles);
                 img.setRGB(x,y,colours[p.rate]);
             }
         }
