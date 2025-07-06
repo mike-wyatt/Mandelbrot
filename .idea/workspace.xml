@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Initial working version">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Naive anti-aliasing">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +53,7 @@
     <configuration name="Mandelbrot (Class)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Mandelbrot" />
       <module name="java-cli" />
-      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325" />
+      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -aa 2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -86,7 +85,21 @@
       <option name="project" value="LOCAL" />
       <updated>1737970164351</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Commit workspace files">
+      <created>1751579358879</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1751579358879</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Naive anti-aliasing">
+      <created>1751779359900</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1751779359900</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,7 +115,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial working version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial working version" />
+    <MESSAGE value="Commit workspace files" />
+    <MESSAGE value="Naive anti-aliasing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Naive anti-aliasing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
