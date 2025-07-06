@@ -3,23 +3,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
-import org.apache.commons.imaging.PixelDensity;
 import org.apache.commons.imaging.formats.png.PngWriter;
 import org.apache.commons.imaging.formats.png.PngImagingParameters;
 import org.apache.commons.imaging.palette.PaletteFactory;
 
 public class Mandelbrot {
 
-    public static void main( String args[]) {
+    public static void main(String[] args) {
 
         MandelbrotArgs mArgs = MandelbrotArgs.parseArgs(args);
 
         if(mArgs.parseErrors) {
             if(mArgs.debug) {
-                System.err.println("Unable to parse argument string [" + Arrays.stream(args).collect(Collectors.joining(" ")) + "]");
+                System.err.println("Unable to parse argument string [" + String.join(" ", args) + "]");
             }
             System.err.println(mArgs.errorMsg);
             if(mArgs.printHelp) {
@@ -52,7 +49,7 @@ public class Mandelbrot {
         BufferedImage img = new BufferedImage(mArgs.xResolution, mArgs.yResolution, BufferedImage.TYPE_INT_ARGB);
 
         // Precalculate colours
-        int colours[] = new int[256];
+        int[] colours = new int[256];
         for( int i = 0; i < 255; i++) {
             Color c = new Color(i/2,i/2,i);
             colours[i] = c.getRGB();

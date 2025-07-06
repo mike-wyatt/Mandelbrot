@@ -8,7 +8,7 @@ public class MandelbrotGenerator {
 
     protected static final double divergenceCeiling = 2.0;
 
-    protected static HashMap<String, DataPoint> pointCache = new HashMap<String, DataPoint>();
+    protected static HashMap<String, DataPoint> pointCache = new HashMap<>();
 
     protected long pointsCalculated = 0, cacheHits = 0, cacheRemoves = 0, cacheMisses = 0, cacheSkips = 0, cachePuts = 0;
 
@@ -23,7 +23,7 @@ public class MandelbrotGenerator {
     public static final int CACHE_HINT_LAST_ROW = 0x0010;
     public static final int CACHE_HINT_LAST_COLUMN = 0x0020;
 
-    public class DataPoint {
+    public static class DataPoint {
         public double X;
         public double Y;
         public int rate;
@@ -176,7 +176,7 @@ public class MandelbrotGenerator {
             z = z.multiply( z ).add( c );
         }
 
-        DataPoint result = new DataPoint(X, Y, maxIterations );
+        DataPoint result = new DataPoint(X, Y, maxIterations);
         pointsCalculated++;
         if((cacheHint & CACHE_HINT_STORE) != 0) {
             cachePuts++;

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Naive anti-aliasing">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="workspace changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
     <configuration name="Mandelbrot (Class)" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Mandelbrot" />
       <module name="java-cli" />
-      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -aa 2" />
+      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -aa 4" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -123,9 +124,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Mandelbrot.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java</url>
+          <line>144</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
