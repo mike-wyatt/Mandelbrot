@@ -63,15 +63,30 @@ public class Mandelbrot {
         //
         // Now generate
         //
+        long startTimeNano = System.nanoTime();
+        int cacheHint = MandelbrotGenerator.CACHE_HINT_TOP_ROW;
         for( int y = 0; y < mArgs.yResolution; y++ ) {
+            if( y == mArgs.yResolution - 1 ) {
+                cacheHint = MandelbrotGenerator.CACHE_HINT_LAST_ROW;
+            }
+
             for (int x = 0; x < mArgs.xResolution; x++) {
+                if( x == mArgs.xResolution - 1 ) {
+                    cacheHint |= MandelbrotGenerator.CACHE_HINT_LAST_COLUMN;
+                }
+
                 double X = mArgs.minViewportX + ((double) x * xIncrement);
                 double Y = mArgs.maxViewportY - ((double) y * yIncrement);      // Invert Y from world to camera co-ords
 
-                MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, mArgs.aaCycles);
+                MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, mArgs.aaCycles, cacheHint);
                 img.setRGB(x,y,colours[p.rate]);
             }
+            cacheHint = 0;
         }
+        long endTimeNano = System.nanoTime();
+        long timeMs = (endTimeNano - startTimeNano)/ 1000000;
+        System.out.println("Calculated image in [" + timeMs + "] ms");
+        System.out.println(gen.getStats());
 
         try {
             PngWriter png = new PngWriter();
