@@ -33,7 +33,7 @@ public class Mandelbrot {
         double xPxIncrement = 1.0 / (double) mArgs.xResolution;
         double xIncrement = (mArgs.maxViewportX - mArgs.minViewportX) * xPxIncrement;
         double yPxIncrement = 1.0 / (double) mArgs.yResolution;
-        double yIncrement = (mArgs.maxViewportY - mArgs.minViewportY) * yPxIncrement;
+        double yIncrement = -((mArgs.maxViewportY - mArgs.minViewportY) * yPxIncrement);
 
         //
         // Output image
@@ -70,13 +70,17 @@ public class Mandelbrot {
             for (int x = 0; x < mArgs.xResolution; x++) {
                 if( x == mArgs.xResolution - 1 ) {
                     cacheHint |= MandelbrotGenerator.CACHE_HINT_LAST_COLUMN;
+                } else if( x == 0 ) {
+                    cacheHint |= MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
                 }
 
                 double X = mArgs.minViewportX + ((double) x * xIncrement);
-                double Y = mArgs.maxViewportY - ((double) y * yIncrement);      // Invert Y from world to camera co-ords
+                double Y = mArgs.maxViewportY + ((double) y * yIncrement);      // yIncrement is negative
 
                 MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, mArgs.aaCycles, cacheHint);
                 img.setRGB(x,y,colours[p.rate]);
+
+                cacheHint &= ~MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
             }
             cacheHint = 0;
         }
