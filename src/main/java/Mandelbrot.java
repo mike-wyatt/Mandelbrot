@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.imaging.formats.png.PngWriter;
 import org.apache.commons.imaging.formats.png.PngImagingParameters;
@@ -24,8 +25,6 @@ public class Mandelbrot {
             }
             return;
         }
-
-        MandelbrotGenerator gen = new MandelbrotGenerator();
 
         //
         // Very naive iterative approach
@@ -60,40 +59,159 @@ public class Mandelbrot {
         //
         // Now generate
         //
+        CountDownLatch latch = new CountDownLatch(mArgs.numThreads);
+        int xPortion = mArgs.xResolution / mArgs.numThreads;
+
         long startTimeNano = System.nanoTime();
-        int cacheHint = MandelbrotGenerator.CACHE_HINT_TOP_ROW;
-        for( int y = 0; y < mArgs.yResolution; y++ ) {
-            if( y == mArgs.yResolution - 1 ) {
-                cacheHint = MandelbrotGenerator.CACHE_HINT_LAST_ROW;
-            }
 
-            for (int x = 0; x < mArgs.xResolution; x++) {
-                if( x == mArgs.xResolution - 1 ) {
-                    cacheHint |= MandelbrotGenerator.CACHE_HINT_LAST_COLUMN;
-                } else if( x == 0 ) {
-                    cacheHint |= MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
-                }
+        for( int t = 0; t < mArgs.numThreads; t++ ) {
+            int ulX = t * xPortion;
+            int xRes = ulX + xPortion;
+            if( xRes > mArgs.xResolution ) { xRes = mArgs.xResolution; }
+            double minViewportX = mArgs.minViewportX + (t * xPortion * xIncrement);
 
-                double X = mArgs.minViewportX + ((double) x * xIncrement);
-                double Y = mArgs.maxViewportY + ((double) y * yIncrement);      // yIncrement is negative
+            Calculator calc = new Calculator(img, ulX, 0, xRes, mArgs.yResolution,
+                    minViewportX, mArgs.maxViewportY, xIncrement, yIncrement, mArgs.aaCycles, colours, latch );
 
-                MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, mArgs.aaCycles, cacheHint);
-                img.setRGB(x,y,colours[p.rate]);
-
-                cacheHint &= ~MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
-            }
-            cacheHint = 0;
+            new Thread(calc).start();
         }
+
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         long endTimeNano = System.nanoTime();
         long timeMs = (endTimeNano - startTimeNano)/ 1000000;
         System.out.println("Calculated image in [" + timeMs + "] ms");
-        System.out.println(gen.getStats());
 
         try {
             PngWriter png = new PngWriter();
             png.writeImage(img, outputF, pngImagingParameters, new PaletteFactory());
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    static class Calculator implements Runnable {
+
+        private final BufferedImage img;
+        private final int ulX;
+        private final int ulY;
+        private final int resX;
+        private final int resY;
+        private final double imgUlX;
+        private final double imgUlY;
+        private final double xIncrement;
+        private final double yIncrement;
+        private final int aaCycles;
+        private final int colours[];
+        private CountDownLatch latch;
+
+        Calculator(BufferedImage img, int ulX, int ulY, int resX, int resY, double imgUlX, double imgUlY,
+                   double xIncrement, double yIncrement, int aaCycles, int[] colours, CountDownLatch latch) {
+            this.img = img;
+            this.ulX = ulX;
+            this.ulY = ulY;
+            this.resX = resX;
+            this.resY = resY;
+            this.imgUlX = imgUlX;
+            this.imgUlY = imgUlY;
+            this.xIncrement = xIncrement;
+            this.yIncrement = yIncrement;
+            this.aaCycles = aaCycles;
+            this.colours = colours;
+            this.latch = latch;
+        }
+
+        @Override
+        public void run() {
+            //
+            // Weird. The M1 has 4 "economy" and 4 "performance" cores. The first thread always seems to
+            // be tied to an economy core, as it takes considerably longer than subsequent threads, even with
+            // the priority increased from 5 to 10. Look into if there is a way to make this change.
+            //
+            Thread.currentThread().setPriority(10);
+            System.out.println("Starting generation from [" + ulX + "," + ulY + "] in thread [" + Thread.currentThread().threadId() + "] with priority [" + Thread.currentThread().getPriority() + "]");
+
+            long nanoStart = System.nanoTime();
+
+            MandelbrotGenerator gen = new MandelbrotGenerator();
+            int portionWidth = resX - ulX;
+            int portionHeight = resY - ulY;
+
+            int[] result = new int[portionWidth * portionHeight];
+
+            int cacheHint = MandelbrotGenerator.CACHE_HINT_TOP_ROW;
+            for( int y = ulY; y < resY; y++ ) {
+                if( y == resY - 1 ) {
+                    cacheHint = MandelbrotGenerator.CACHE_HINT_LAST_ROW;
+                }
+
+                for (int x = ulX; x < resX; x++) {
+                    int portionX = x - ulX;
+                    int portionY = y - ulY;
+
+                    if( x == resX - 1 ) {
+                        cacheHint |= MandelbrotGenerator.CACHE_HINT_LAST_COLUMN;
+                    } else if( portionX == 0 ) {
+                        cacheHint |= MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
+                    }
+
+                    double X = imgUlX + ((double) portionX * xIncrement);
+                    double Y = imgUlY + ((double) portionY * yIncrement);      // yIncrement is negative
+
+                    MandelbrotGenerator.DataPoint p = gen.calculatePoint(X, Y, xIncrement, yIncrement, aaCycles, cacheHint);
+
+
+                    int offsetY = portionY * portionWidth;
+                    int offset = portionX + offsetY;
+
+                    result[ offset ] = colours[p.rate];
+
+                    // DEBUG:
+                    // Real screen X
+                    // Portion array X
+                    // Image space X
+                    // Real screen Y
+                    // Portion array Y
+                    // Image space Y
+                    // Offset into portion array
+                    // result value
+//                    System.out.println(Thread.currentThread().threadId() + "," + x + "," + portionX + "," + X + "," +
+//                            y + "," + portionY + "," + Y + "," + offset + "," + p.rate);
+
+                    cacheHint &= ~MandelbrotGenerator.CACHE_HINT_FIRST_COLUMN;
+                }
+                cacheHint = 0;
+            }
+
+            long nanoEndGen = System.nanoTime();
+            long nanoEndLock = 0;
+            synchronized (img) {
+                nanoEndLock = System.nanoTime();
+                img.setRGB(ulX, ulY, portionWidth, portionHeight, result, 0, portionWidth  );
+            }
+
+            long nanoEnd = System.nanoTime();
+
+            long genMs = (nanoEndGen - nanoStart) / 1000000;
+            long lockMs = (nanoEndLock - nanoEndGen ) / 1000000;
+            long imgSetMs = (nanoEnd - nanoEndLock) / 1000000;
+
+            // TODO: PICKUP HERE
+            // Why 2x or even 3x difference between compute times in identical threads?
+            // Is the 1st section that takes the longest BUT not as long as to do the whole picture
+
+            System.out.println("Finished generation in thread [" + Thread.currentThread().threadId() + "] - Generation [" +
+                    genMs + "] ms - locking - [" + lockMs + "] ms - imgSet [" + imgSetMs + "] ms");
+
+
+            // System.out.println(gen.getStats());
+
+            latch.countDown();
         }
     }
 

@@ -53,25 +53,32 @@ public class MandelbrotArgs {
     //
     int aaCycles = 1;
 
+    //
+    // Threads
+    //
+    int numThreads = 1;
+
     private MandelbrotArgs() {
     }
 
     public String printUsage() {
         return
-            "Usage: java Mandelbrot [-hv] -o <outputFileName> [-f <outputfileFormat]"
-            + "[-vp <ulx> <uly> <lrx> <lry>] [-r <x> <y>]\n"
-            + "-h, --help\t\t\tDisplay this information and exit\n"
-            + "-v, --verbose\t\t\tPrint debugging information and \n"
-            + "-o <outputFileName>\t\tRelative path and file name of the output image. Must be writable\n"
-            + "-f <outputFileFormat>\t\tFormat of the output image. May be PNG (Default) only\n"
-            + "-vp <ulx> <uly> <lrx> <lry>\tViewport coordinates, i.e. the X and Y locations of the Upper Left and\n"
-            + "\t\t\t\t\tLower Right corners of the image in the Mandelbrot plane. Accepts decimal values\n"
-            + "\t\t\t\t\tDefault values show the whole set (-2.0 1.125 1.0 - 1.125)\n"
-            + "-r <x> <y>\t\t\tResolution of the output image as integer values X and Y. Defaults to 1024 x 768.\n"
-            + "-aa <x>\t\t\tAnti-aliasing cycles. Positive Integer 1 (default) to as many as you like";
+                """
+                        Usage: java Mandelbrot [-hv] -o <outputFileName> [-f <outputfileFormat][-vp <ulx> <uly> <lrx> <lry>] [-r <x> <y>]
+                        -h, --help\t\t\tDisplay this information and exit
+                        -v, --verbose\t\t\tPrint debugging information and\s
+                        -o <outputFileName>\t\tRelative path and file name of the output image. Must be writable
+                        -f <outputFileFormat>\t\tFormat of the output image. May be PNG (Default) only
+                        -vp <ulx> <uly> <lrx> <lry>\tViewport coordinates, i.e. the X and Y locations of the Upper Left and
+                        \t\t\t\t\tLower Right corners of the image in the Mandelbrot plane. Accepts decimal values
+                        \t\t\t\t\tDefault values show the whole set (-2.0 1.125 1.0 - 1.125)
+                        -r <x> <y>\t\t\tResolution of the output image as integer values X and Y. Defaults to 1024 x 768.
+                        -aa <x>\t\t\tAnti-aliasing cycles. Positive Integer 1 (default) to as many as you like
+                        -t <threads>\t\t\tNumber of threads to use. Positive Integer 1 (Default) to 256.
+                        """;
     }
 
-    static public MandelbrotArgs parseArgs( String args[]) {
+    static public MandelbrotArgs parseArgs(String[] args) {
 
         MandelbrotArgs result = new MandelbrotArgs();
 
@@ -204,6 +211,21 @@ public class MandelbrotArgs {
                         result.errorMsg = "Anti-alias is not a valid integer number.";
                     }
                 }
+            } else if( switchName.compareToIgnoreCase( "-t") == 0 ) {
+                String tStr = safeGetArg(args, ++i);
+
+                if (tStr == null) {
+                    result.parseErrors = true;
+                    result.errorMsg = "Missing Thread Count value.";
+                } else {
+                    try {
+                        result.numThreads = Integer.parseInt(tStr);
+                        // TODO: Check for integers [1 .. 256]
+                    } catch (NumberFormatException x) {
+                        result.parseErrors = true;
+                        result.errorMsg = "Thread Count is not a valid integer number.";
+                    }
+                }
             } else {
                 result.parseErrors = true;
                 result.errorMsg = "Unrecognised parameter " + switchName;
@@ -220,7 +242,7 @@ public class MandelbrotArgs {
         return result;
     }
 
-    static private String safeGetArg( String args[], int index ) {
+    static private String safeGetArg(String[] args, int index ) {
         if( args.length <= index ) {
             return null;
         } else {

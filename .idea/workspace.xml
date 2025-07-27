@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="workspace changes">
+    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MandelbrotArgs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MandelbrotArgs.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,11 +51,19 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Mandelbrot (Class)">
-    <configuration name="Mandelbrot (Class)" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.Mandelbrot 1024 x 768">
+    <configuration name="Mandelbrot 100 x 100" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Mandelbrot" />
       <module name="java-cli" />
-      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -aa 4" />
+      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -t 2 -r 100 100" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Mandelbrot 1024 x 768" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Mandelbrot" />
+      <module name="java-cli" />
+      <option name="PROGRAM_PARAMETERS" value="-o /tmp/output.png -vp 0.0 0.75 0.5 0.325 -aa 4 -t 2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -66,7 +75,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Mandelbrot (Class)" />
+      <item itemvalue="Application.Mandelbrot 1024 x 768" />
+      <item itemvalue="Application.Mandelbrot 100 x 100" />
       <item itemvalue="JAR Application.Mandelbrot" />
     </list>
   </component>
@@ -100,7 +110,28 @@
       <option name="project" value="LOCAL" />
       <updated>1751779359900</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Basic point caching implementation">
+      <created>1751839567838</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1751839567838</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Linting">
+      <created>1751839705781</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1751839705781</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fixed caching logic so that the cache is properly flushed as points are no longer needed">
+      <created>1752388950828</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1752388950828</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -118,15 +149,34 @@
     <MESSAGE value="Initial working version" />
     <MESSAGE value="Commit workspace files" />
     <MESSAGE value="Naive anti-aliasing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Naive anti-aliasing" />
+    <MESSAGE value="Basic point caching implementation" />
+    <MESSAGE value="Linting" />
+    <MESSAGE value="Fixed caching logic so that the cache is properly flushed as points are no longer needed" />
+    <MESSAGE value="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java</url>
-          <line>144</line>
-          <option name="timeStamp" value="12" />
+          <url>file://$PROJECT_DIR$/src/main/java/Mandelbrot.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Mandelbrot.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Mandelbrot.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Mandelbrot.java</url>
+          <line>162</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

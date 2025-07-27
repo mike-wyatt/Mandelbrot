@@ -8,7 +8,7 @@ public class MandelbrotGenerator {
 
     protected static final double divergenceCeiling = 2.0;
 
-    protected static HashMap<String, DataPoint> pointCache = new HashMap<>();
+    protected HashMap<String, DataPoint> pointCache = new HashMap<>();
 
     protected long pointsCalculated = 0, cacheHits = 0, cacheRemoves = 0, cacheMisses = 0, cacheSkips = 0, cachePuts = 0;
 
@@ -53,8 +53,6 @@ public class MandelbrotGenerator {
             long mantissaY = bitsY & 0x000fffffffffff00L;       // Round off last byte, should be accurate enough?
 
             return negativeX + "-" + exponentX + "-" + mantissaX + "-" + negativeY + "-" + exponentY + "-" + mantissaY;
-
-            // return Double.hashCode(X) + "-" + Double.hashCode(Y);
         }
     }
 
