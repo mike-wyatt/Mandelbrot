@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac">
+    <list default="true" id="fe0786d9-c618-44bb-90a7-bb5318ada8ee" name="Changes" comment="Linting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Mandelbrot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MandelbrotArgs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MandelbrotArgs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MandelbrotGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1752388950828</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac">
+      <created>1753653000294</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1753653000294</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -150,10 +155,10 @@
     <MESSAGE value="Commit workspace files" />
     <MESSAGE value="Naive anti-aliasing" />
     <MESSAGE value="Basic point caching implementation" />
-    <MESSAGE value="Linting" />
     <MESSAGE value="Fixed caching logic so that the cache is properly flushed as points are no longer needed" />
     <MESSAGE value="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added multi-threading support using -t argument. Approx 75% speed improvement when using 8 threads on an M1 Mac" />
+    <MESSAGE value="Linting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Linting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -66,7 +66,7 @@ public class MandelbrotArgs {
                 """
                         Usage: java Mandelbrot [-hv] -o <outputFileName> [-f <outputfileFormat][-vp <ulx> <uly> <lrx> <lry>] [-r <x> <y>]
                         -h, --help\t\t\tDisplay this information and exit
-                        -v, --verbose\t\t\tPrint debugging information and\s
+                        -v, --verbose\t\t\tPrint debugging information
                         -o <outputFileName>\t\tRelative path and file name of the output image. Must be writable
                         -f <outputFileFormat>\t\tFormat of the output image. May be PNG (Default) only
                         -vp <ulx> <uly> <lrx> <lry>\tViewport coordinates, i.e. the X and Y locations of the Upper Left and
